@@ -28,7 +28,7 @@ $(document).ready(function(){
 	});
 
 	$("#help1").click(function(){
-		alert("Place ur icons such that they are 3 in a row/column/diagonal to win. Try to prevent your opponent from scoring")
+		alert("Place ur icons such that there are 3 in a row/column/diagonal to win. Try to prevent your opponent from scoring")
 	});
 
 	$(".cell").click(function(){
@@ -86,7 +86,7 @@ $(document).ready(function(){
 function AIturn(){
 	cells=document.getElementsByClassName("cell");
 	slot=findBestMove();
-	cells[slot].innerText="O";
+	$(cells[slot]).text("O");
 	var check=checkWin();
 	if(check!=0){
 
@@ -96,7 +96,6 @@ function AIturn(){
 
 	scores[check-1]++;
 	resetGame();
-	updateScores();
 
 	}
 }
@@ -104,7 +103,7 @@ function AIturn(){
 function findBestMove(){
 	var temp=new Array(),i,j,k;
 	for(i=0;i<9;i++){
-		temp[i]=cells[i].innerText;
+		temp[i]=$(cells[i]).text();
 	}
 	for(i=0;i<9;i++){
 		if(temp[i]!="O"&&temp[i]!="X"){
@@ -120,19 +119,15 @@ function findBestMove(){
 			else temp[i]="";
 		}
 	}	
-	
-	j=parseInt((Math.random()*999)%8); 
-	i=0;
-	k=0;
-	while(true){
-		if(temp[i]!="O"&&temp[i]!="X"){
-			k++;
-		}
-		if(k==j)return i;
-		i++;
-		if(i==9)i=0;
 
+	j=parseInt((Math.random()*999)%8); 
+	while(true){
+		if(temp[j]!="O"&&temp[j]!="X")
+			return j;
+		j++;
+		if(j==9)j=0;
 	}
+	
 }
 
 function checkPossibility(temp){
@@ -147,7 +142,6 @@ function checkPossibility(temp){
 
 	arr.push(temp[0]+temp[4]+temp[8]);
 	arr.push(temp[6]+temp[4]+temp[2]);
-
 	return checkArray(arr);
 }
 
@@ -156,18 +150,16 @@ function checkWin()
 	
 	var arr=new Array();
 	cells=document.getElementsByClassName("cell");
-	arr.push(cells[0].innerText+cells[1].innerText+cells[2].innerText);
-	arr.push(cells[3].innerText+cells[4].innerText+cells[5].innerText);
-	arr.push(cells[6].innerText+cells[7].innerText+cells[8].innerText);
+	arr.push($(cells[0]).text()+$(cells[1]).text()+$(cells[2]).text());
+	arr.push($(cells[3]).text()+$(cells[4]).text()+$(cells[5]).text());
+	arr.push($(cells[6]).text()+$(cells[7]).text()+$(cells[8]).text());
 	
-	arr.push(cells[0].innerText+cells[3].innerText+cells[6].innerText);
-	arr.push(cells[1].innerText+cells[4].innerText+cells[7].innerText);
-	arr.push(cells[2].innerText+cells[5].innerText+cells[8].innerText);
+	arr.push($(cells[0]).text()+$(cells[3]).text()+$(cells[6]).text());
+	arr.push($(cells[1]).text()+$(cells[4]).text()+$(cells[7]).text());
+	arr.push($(cells[2]).text()+$(cells[5]).text()+$(cells[8]).text());
 
-	arr.push(cells[0].innerText+cells[4].innerText+cells[8].innerText);
-	arr.push(cells[6].innerText+cells[4].innerText+cells[2].innerText);
-
-
+	arr.push($(cells[0]).text()+$(cells[4]).text()+$(cells[8]).text());
+	arr.push($(cells[6]).text()+$(cells[4]).text()+$(cells[2]).text());
 	return checkArray(arr);
 	
 }
@@ -198,20 +190,20 @@ function checkArray(arr){
 }
 
 function updateScores()
-{
-	document.getElementById("score1").innerText=" X  Player1 : "+scores[0];
+{	
+	$("#score1").text(" X  Player1 : "+scores[0]);
 	if(flgsingle==0){
-		document.getElementById("score2").innerText=" O  Player2 : "+scores[1];
+		$("#score2").text(" O  Player2 : "+scores[1]);
 	}
 	else{
-		document.getElementById("score2").innerText=" O  Computer : "+scores[1];
+		$("#score2").text(" O  Computer : "+scores[1]);
 	}
-	document.getElementById("score3").innerText="Tie : "+scores[2];
+	$("#score3").text("Tie : "+scores[2]);
 
 }
 
 function resetGame()
-{
+{	
 	$(".cell").text("");
 	var gamecount=scores[0]+scores[1]+scores[2];
 	
@@ -222,7 +214,7 @@ function resetGame()
 	else{
 
 		flg=2;
-		if(flgsingle==1) cells[4].innerText="O";
+		if(flgsingle==1) $(cells[4]).text("O");
 
 	}
 
